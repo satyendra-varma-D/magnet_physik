@@ -59,7 +59,7 @@ export function AnalyticsScreen() {
             <Calendar className="w-4 h-4 text-slate-400" />
             Last 30 Days
           </button>
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+          <button className="flex items-center gap-2 px-6 py-2.5 bg-[#5DA9DD] hover:bg-[#4A98CC] text-white rounded-lg text-xs font-bold transition-all shadow-sm">
             <Download className="w-4 h-4" />
             Export Data
           </button>
@@ -102,7 +102,7 @@ export function AnalyticsScreen() {
             <h3 className="text-lg font-bold text-slate-900">Query Volume Trend</h3>
             <div className="flex bg-slate-50 p-1 rounded-lg">
                <button className="px-4 py-1.5 text-xs font-bold text-slate-400">Daily</button>
-               <button className="px-4 py-1.5 text-xs font-bold bg-white text-[#009EE3] rounded shadow-sm">Weekly</button>
+               <button className="px-4 py-1.5 text-xs font-bold bg-white text-[#5DA9DD] rounded shadow-sm">Weekly</button>
             </div>
           </div>
           <div className="h-[300px]">
@@ -112,7 +112,7 @@ export function AnalyticsScreen() {
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} />
                 <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ backgroundColor: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px" }} />
-                <Bar dataKey="count" fill="#009EE3" radius={[4, 4, 0, 0]} barSize={40} />
+                <Bar dataKey="count" fill="#5DA9DD" radius={[4, 4, 0, 0]} barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>

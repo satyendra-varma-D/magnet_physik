@@ -87,7 +87,7 @@ export function KnowledgeDetailScreen() {
            {/* Document Header Card */}
            <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
               <div className="flex items-start gap-6">
-                 <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                 <div className="w-16 h-16 bg-[#5DA9DD] rounded-2xl flex items-center justify-center text-white shadow-lg">
                     <FileText className="w-8 h-8" />
                  </div>
                  <div className="flex-1">
@@ -107,7 +107,7 @@ export function KnowledgeDetailScreen() {
                     <div className="flex items-center gap-3">
                        <span className="text-xl font-bold text-slate-900">{doc.confidence}%</span>
                        <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-[#009EE3]" style={{ width: `${doc.confidence}%` }} />
+                          <div className="h-full bg-[#5DA9DD]" style={{ width: `${doc.confidence}%` }} />
                        </div>
                     </div>
                  </div>
@@ -126,10 +126,10 @@ export function KnowledgeDetailScreen() {
            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
               <div className="px-8 py-5 border-b border-slate-100 flex items-center justify-between">
                  <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                    <Database className="w-4 h-4 text-[#009EE3]" />
+                    <Database className="w-4 h-4 text-[#5DA9DD]" />
                     Extracted Metadata
                  </h3>
-                 <button className="text-[10px] font-bold text-[#009EE3] uppercase hover:underline">Edit Fields</button>
+                 <button className="text-[10px] font-bold text-[#5DA9DD] uppercase hover:underline">Edit Fields</button>
               </div>
               <div className="grid grid-cols-2 gap-px bg-slate-100">
                  {doc.metadata.map((meta, i) => (
@@ -142,20 +142,20 @@ export function KnowledgeDetailScreen() {
            </div>
 
            {/* AI Insight Breakdown */}
-           <div className="bg-slate-900 text-white rounded-xl p-8 shadow-lg relative overflow-hidden">
+           <div className="bg-[#5DA9DD] text-white rounded-xl p-8 shadow-lg relative overflow-hidden">
               <div className="relative z-10">
                  <div className="flex items-center gap-3 mb-6">
-                    <Activity className="w-5 h-5 text-[#009EE3]" />
+                    <Activity className="w-5 h-5 text-white" />
                     <h3 className="text-sm font-bold uppercase tracking-widest">Neural Analysis Breakdown</h3>
                  </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                        <div className="flex justify-between items-center text-xs">
                           <span className="opacity-60">Entity Recognition</span>
-                          <span className="text-[#009EE3] font-bold">99.2%</span>
+                          <span className="text-[#5DA9DD] font-bold">99.2%</span>
                        </div>
                        <div className="h-1 bg-white/10 rounded-full">
-                          <div className="h-full bg-[#009EE3] w-[99.2%]" />
+                          <div className="h-full bg-[#5DA9DD] w-[99.2%]" />
                        </div>
                     </div>
                     <div className="space-y-4">
@@ -215,7 +215,7 @@ export function KnowledgeDetailScreen() {
                           <div className="absolute left-1.5 top-5 bottom-[-15px] w-px bg-slate-100" />
                        )}
                        <div className={`w-3 h-3 rounded-full mt-1.5 z-10 border-2 border-white shadow-sm ${
-                          event.type === 'success' ? 'bg-green-500' : 'bg-[#009EE3]'
+                          event.type === 'success' ? 'bg-green-500' : 'bg-[#5DA9DD]'
                        }`} />
                        <div className="flex-1">
                           <p className="text-[11px] font-bold text-slate-800">{event.event}</p>
@@ -230,12 +230,12 @@ export function KnowledgeDetailScreen() {
            </div>
 
            {/* Quick Actions Card */}
-           <div className="bg-[#009EE3] rounded-xl p-6 text-white shadow-lg shadow-blue-200/50">
+           <div className="bg-[#5DA9DD] rounded-xl p-6 text-white shadow-lg shadow-blue-200/50">
               <h4 className="text-sm font-bold mb-2">Need to update this knowledge?</h4>
               <p className="text-[10px] opacity-80 mb-6 leading-relaxed">
                  You can upload a new version or manually correct neural fragments to improve accuracy.
               </p>
-              <button className="w-full py-2.5 bg-white text-[#009EE3] rounded-lg text-xs font-bold hover:bg-slate-50 transition-all shadow-sm">
+              <button className="w-full py-2.5 bg-white text-[#5DA9DD] rounded-lg text-xs font-bold hover:bg-slate-50 transition-all shadow-sm">
                  Upload New Version
               </button>
            </div>

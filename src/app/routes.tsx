@@ -3,7 +3,7 @@ import { LoginScreen } from "./screens/LoginScreen";
 import { DashboardLayout } from "./components/DashboardLayout";
 import { DashboardScreen } from "./screens/DashboardScreen";
 import { KnowledgeUploadScreen } from "./screens/KnowledgeUploadScreen";
-import { EmailReviewScreen } from "./screens/EmailReviewScreen";
+import { QAExtractionReviewScreen } from "./screens/QAExtractionReviewScreen";
 import { KnowledgeBaseScreen } from "./screens/KnowledgeBaseScreen";
 import { QueryAssistantScreen } from "./screens/QueryAssistantScreen";
 import { QueryHistoryScreen } from "./screens/QueryHistoryScreen";
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: DashboardScreen },
       { path: "upload", Component: KnowledgeUploadScreen },
-      { path: "email-review", Component: EmailReviewScreen },
+      { path: "extraction-review", Component: QAExtractionReviewScreen },
       { path: "knowledge-base", Component: KnowledgeBaseScreen },
       { path: "knowledge-base/:id", Component: KnowledgeDetailScreen },
       { path: "query-assistant", Component: QueryAssistantScreen },

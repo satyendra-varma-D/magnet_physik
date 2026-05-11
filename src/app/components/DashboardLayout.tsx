@@ -13,61 +13,88 @@ import {
   LogOut,
   Bell,
   Search,
+  Menu,
+  ChevronLeft,
 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard", end: true },
-  { to: "/dashboard/email-review", icon: Mail, label: "Email Review" },
-  { to: "/dashboard/knowledge-base", icon: Database, label: "Knowledge Base" },
-  { to: "/dashboard/settings", icon: Settings, label: "Settings" },
+  { to: "/dashboard", icon: LayoutDashboard, label: "Operational Overview", end: true },
+  { to: "/dashboard/upload", icon: Upload, label: "Technical Knowledge Ingestion" },
+  { to: "/dashboard/extraction-review", icon: Mail, label: "Q&A Extraction Review" },
+  { to: "/dashboard/knowledge-base", icon: Database, label: "Approved Knowledge Base" },
+  { to: "/dashboard/query-assistant", icon: MessageSquare, label: "Technical Response Workspace" },
+  { to: "/dashboard/settings", icon: Settings, label: "System Administration" },
 ];
 
 export function DashboardLayout() {
   const [language, setLanguage] = useState<"EN" | "DE">("EN");
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-700 font-sans">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-slate-200 z-50 hidden lg:flex flex-col">
-        <div className="p-8">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-[#009EE3] rounded-lg flex items-center justify-center shadow-md border border-white/20">
-               <span className="text-white font-bold text-lg italic tracking-tighter">MP</span>
+      <motion.aside 
+        initial={false}
+        animate={{ width: isCollapsed ? 80 : 256 }}
+        className="fixed left-0 top-0 h-screen bg-white border-r border-slate-200 z-50 hidden lg:flex flex-col overflow-hidden"
+      >
+        <div className="p-6 h-20 flex items-center justify-between border-b border-slate-50">
+          <div className={`flex items-center gap-3 transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
+            <div className="w-8 h-8 bg-[#5DA9DD] rounded-lg flex items-center justify-center shadow-md border border-white/20 flex-shrink-0">
+               <span className="text-white font-bold text-base italic tracking-tighter">MP</span>
             </div>
-            <div>
-              <h1 className="text-base font-bold tracking-tight text-slate-900 leading-none">MAGNET-PHYSIK</h1>
-              <p className="text-[10px] text-slate-400 font-medium mt-1">Technical Station</p>
+            <div className="whitespace-nowrap">
+              <h1 className="text-sm font-black tracking-tight text-slate-900 leading-none">MAGNET-PHYSIK</h1>
+              <p className="text-[8px] text-slate-400 font-bold mt-1 uppercase tracking-wider">Engineering Station</p>
             </div>
           </div>
+          
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={`p-2 rounded-lg hover:bg-slate-50 text-slate-400 hover:text-[#5DA9DD] transition-all ${isCollapsed ? 'mx-auto' : ''}`}
+          >
+            {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          </button>
         </div>
 
-        <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto premium-scrollbar">
+        <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto premium-scrollbar">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.end}
+              title={isCollapsed ? item.label : ""}
               className={({ isActive }) =>
-                `group flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 ${
+                `group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 relative ${
                   isActive
-                    ? "text-[#009EE3] bg-slate-50 font-semibold"
-                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                    ? "text-[#5DA9DD] bg-blue-50/50 font-bold border border-blue-100 shadow-sm"
+                    : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <item.icon className={`w-4.5 h-4.5 transition-colors ${isActive ? "text-[#009EE3]" : "text-slate-400 group-hover:text-slate-600"}`} />
-                  <span className="text-sm">{item.label}</span>
-                  {isActive && (
+                  <item.icon className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? "text-[#5DA9DD]" : "text-slate-400 group-hover:text-[#5DA9DD]"} ${isCollapsed ? 'mx-auto' : ''}`} />
+                  <motion.span 
+                    initial={false}
+                    animate={{ opacity: isCollapsed ? 0 : 1, x: isCollapsed ? -10 : 0 }}
+                    className={`text-[11px] font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
+                  >
+                    {item.label}
+                  </motion.span>
+                  
+                  {isActive && !isCollapsed && (
                     <motion.div 
                       layoutId="nav-pill"
-                      className="ml-auto w-1 h-4 bg-[#009EE3] rounded-full" 
+                      className="ml-auto w-1 h-5 bg-[#5DA9DD] rounded-full" 
                     />
+                  )}
+                  {isActive && isCollapsed && (
+                    <div className="absolute left-0 w-1 h-6 bg-[#5DA9DD] rounded-r-full" />
                   )}
                 </>
               )}
@@ -75,22 +102,29 @@ export function DashboardLayout() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-slate-100">
+        <div className="p-3 border-t border-slate-100">
           <button 
-            onClick={() => {
-              // Add any logout logic here (clearing tokens, etc.)
-              navigate("/");
-            }}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+            onClick={() => navigate("/")}
+            title={isCollapsed ? "Logout" : ""}
+            className={`w-full flex items-center gap-3 px-3 py-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all ${isCollapsed ? 'justify-center' : ''}`}
           >
-            <LogOut className="w-4.5 h-4.5" />
-            <span className="text-sm font-medium">Logout</span>
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            <motion.span 
+              initial={false}
+              animate={{ opacity: isCollapsed ? 0 : 1 }}
+              className={`text-[11px] font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
+            >
+              Logout
+            </motion.span>
           </button>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* Main Content Area */}
-      <div className="lg:pl-64 flex flex-col min-h-screen">
+      <motion.div 
+        animate={{ paddingLeft: isCollapsed ? 80 : 256 }}
+        className="flex flex-col min-h-screen transition-all duration-300"
+      >
         {/* Header */}
         <header className="sticky top-0 z-40 h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1">
@@ -126,7 +160,7 @@ export function DashboardLayout() {
                   <p className="text-xs font-bold text-slate-900 leading-none">Admin Console</p>
                   <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">MP-DRIVE-24</p>
                 </div>
-                <div className="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center shadow-sm">
+                <div className="w-9 h-9 bg-[#5DA9DD] rounded-lg flex items-center justify-center shadow-sm">
                   <span className="text-white text-xs font-bold italic">MP</span>
                 </div>
               </div>
@@ -148,7 +182,7 @@ export function DashboardLayout() {
             </motion.div>
           </AnimatePresence>
         </main>
-      </div>
+      </motion.div>
     </div>
   );
 }

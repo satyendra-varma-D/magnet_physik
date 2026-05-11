@@ -58,11 +58,11 @@ export function QueryHistoryScreen() {
           >
             <div className="flex items-start justify-between gap-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 bg-blue-600/10 rounded-2xl flex items-center justify-center border border-blue-500/20 shrink-0">
-                  <MessageSquare className="w-6 h-6 text-blue-400" />
+                <div className="w-12 h-12 bg-[#5DA9DD]/10 rounded-2xl flex items-center justify-center border border-[#5DA9DD]/20 shrink-0">
+                  <MessageSquare className="w-6 h-6 text-[#5DA9DD]" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-bold text-white font-heading group-hover:text-blue-400 transition-colors leading-tight">
+                  <h3 className="text-lg font-bold text-white font-heading group-hover:text-[#5DA9DD] transition-colors leading-tight">
                     {item.query}
                   </h3>
                   <div className="flex flex-wrap items-center gap-4">
@@ -84,7 +84,7 @@ export function QueryHistoryScreen() {
                     {item.rating && (
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, idx) => (
-                          <Star key={idx} className={`w-3 h-3 ${idx < item.rating! ? 'text-blue-400 fill-blue-400' : 'text-slate-700'}`} />
+                          <Star key={idx} className={`w-3 h-3 ${idx < item.rating! ? 'text-[#5DA9DD] fill-[#5DA9DD]' : 'text-slate-700'}`} />
                         ))}
                       </div>
                     )}
