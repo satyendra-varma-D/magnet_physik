@@ -21,10 +21,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Operational Overview", end: true },
-  { to: "/dashboard/upload", icon: Upload, label: "Technical Knowledge Ingestion" },
-  { to: "/dashboard/extraction-review", icon: Mail, label: "Q&A Extraction Review" },
-  { to: "/dashboard/knowledge-base", icon: Database, label: "Approved Knowledge Base" },
-  { to: "/dashboard/query-assistant", icon: MessageSquare, label: "Technical Response Workspace" },
+  { to: "/dashboard/knowledge-base", icon: Database, label: "Knowledge Base" },
+  { to: "/dashboard/query-assistant", icon: MessageSquare, label: "Customer Queries" },
   { to: "/dashboard/settings", icon: Settings, label: "System Administration" },
 ];
 
@@ -39,7 +37,7 @@ export function DashboardLayout() {
       {/* Sidebar */}
       <motion.aside 
         initial={false}
-        animate={{ width: isCollapsed ? 80 : 256 }}
+        animate={{ width: isCollapsed ? 80 : 280 }}
         className="fixed left-0 top-0 h-screen bg-white border-r border-slate-200 z-50 hidden lg:flex flex-col overflow-hidden"
       >
         <div className="p-6 h-20 flex items-center justify-between border-b border-slate-50">
@@ -69,7 +67,7 @@ export function DashboardLayout() {
               end={item.end}
               title={isCollapsed ? item.label : ""}
               className={({ isActive }) =>
-                `group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 relative ${
+                `group flex items-center gap-2.5 px-3 py-3 rounded-xl transition-all duration-300 relative ${
                   isActive
                     ? "text-[#5DA9DD] bg-blue-50/50 font-bold border border-blue-100 shadow-sm"
                     : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
@@ -82,7 +80,7 @@ export function DashboardLayout() {
                   <motion.span 
                     initial={false}
                     animate={{ opacity: isCollapsed ? 0 : 1, x: isCollapsed ? -10 : 0 }}
-                    className={`text-[11px] font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
+                    className={`text-[10px] font-bold uppercase tracking-wider leading-tight transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}
                   >
                     {item.label}
                   </motion.span>
@@ -112,7 +110,7 @@ export function DashboardLayout() {
             <motion.span 
               initial={false}
               animate={{ opacity: isCollapsed ? 0 : 1 }}
-              className={`text-[11px] font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
+              className={`text-[10px] font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
             >
               Logout
             </motion.span>
@@ -122,7 +120,7 @@ export function DashboardLayout() {
 
       {/* Main Content Area */}
       <motion.div 
-        animate={{ paddingLeft: isCollapsed ? 80 : 256 }}
+        animate={{ paddingLeft: isCollapsed ? 80 : 280 }}
         className="flex flex-col min-h-screen transition-all duration-300"
       >
         {/* Header */}

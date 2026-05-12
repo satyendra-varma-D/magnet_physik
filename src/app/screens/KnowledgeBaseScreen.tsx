@@ -60,8 +60,7 @@ const knowledgeEntries = [
 ];
 
 const categoryStats = [
-  { name: "Datasheets", count: 142, icon: FileCode, color: "text-blue-600" },
-  { name: "Email Conversations", count: 864, icon: Mail, color: "text-amber-600" },
+  { name: "Total Knowledge", count: 998, icon: Database, color: "text-[#5DA9DD]" },
   { name: "Approved Entries", count: 986, icon: CheckCircle2, color: "text-green-600" },
   { name: "Pending Review", count: 12, icon: Clock, color: "text-red-600" },
 ];
@@ -71,14 +70,14 @@ export function KnowledgeBaseScreen() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
-  const filters = ["All", "Datasheets", "Email Conversations", "Approved Entries", "Pending Review"];
+  const filters = ["All", "Approved", "Pending Review"];
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200 pb-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Approved Knowledge Base</h2>
+          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Knowledge Base</h2>
           <p className="text-sm text-slate-500 font-medium italic">Master repository of validated engineering intelligence and technical references.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -95,13 +94,13 @@ export function KnowledgeBaseScreen() {
             className="flex items-center gap-2 px-5 py-2.5 bg-[#5DA9DD] text-white rounded text-[10px] font-bold uppercase tracking-widest hover:bg-[#4A98CC] transition-all shadow-md active:scale-[0.98]"
           >
             <Plus className="w-4 h-4" />
-            New Ingestion
+            Add New Ingestion
           </button>
         </div>
       </div>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {categoryStats.map((cat, i) => (
           <div
             key={i}
@@ -148,8 +147,9 @@ export function KnowledgeBaseScreen() {
             <thead>
               <tr className="border-b border-slate-100 bg-slate-50/20">
                 <th className="px-6 py-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Approved Q&A Entry</th>
-                <th className="px-6 py-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Source Document</th>
-                <th className="px-6 py-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Datasheet Ref</th>
+                <th className="px-6 py-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center">Type</th>
+                <th className="px-6 py-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center">Source Document</th>
+                <th className="px-6 py-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center">Datasheet Ref</th>
                 <th className="px-6 py-4 text-center text-[9px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
                 <th className="px-6 py-4 text-right text-[9px] font-bold text-slate-400 uppercase tracking-widest">Last Reviewed</th>
               </tr>
@@ -157,9 +157,7 @@ export function KnowledgeBaseScreen() {
                     <tbody className="divide-y divide-slate-100">
                       {knowledgeEntries.filter(entry => {
                         if (activeFilter === "All") return true;
-                        if (activeFilter === "Datasheets") return entry.type === "Datasheets";
-                        if (activeFilter === "Email Conversations") return entry.type === "Email Conversations";
-                        if (activeFilter === "Approved Entries") return entry.status === "Approved";
+                        if (activeFilter === "Approved") return entry.status === "Approved";
                         if (activeFilter === "Pending Review") return entry.status === "Pending Review";
                         return true;
                       }).map((entry, i) => (
@@ -168,20 +166,27 @@ export function KnowledgeBaseScreen() {
                             className={`group hover:bg-slate-50 transition-all cursor-pointer ${expandedRow === entry.id ? 'bg-blue-50/30' : ''}`}
                             onClick={() => setExpandedRow(expandedRow === entry.id ? null : entry.id)}
                           >
-                            <td className="px-6 py-5 max-w-md">
+                            <td className="px-6 py-5 max-w-xs">
                               <div className="flex flex-col gap-1">
                                 <span className="text-[8px] font-bold text-[#5DA9DD] uppercase tracking-tighter">{entry.id}</span>
                                 <p className="text-[11px] font-bold text-slate-800 leading-snug group-hover:text-[#5DA9DD] transition-colors">{entry.question}</p>
                               </div>
                             </td>
-                            <td className="px-6 py-5">
-                              <div className="flex items-center gap-2">
+                            <td className="px-6 py-5 text-center">
+                              <span className={`px-2 py-1 rounded text-[8px] font-bold uppercase tracking-widest border ${
+                                entry.type === 'Datasheets' 
+                                ? 'bg-blue-50 text-blue-600 border-blue-100' 
+                                : 'bg-amber-50 text-amber-600 border-amber-100'
+                              }`}>{entry.type}</span>
+                            </td>
+                            <td className="px-6 py-5 text-center">
+                              <div className="flex items-center justify-center gap-2">
                                 <FileText className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-600" />
                                 <span className="text-[10px] font-bold text-slate-600">{entry.sourceDoc}</span>
                               </div>
                             </td>
-                            <td className="px-6 py-5">
-                              <div className="flex items-center gap-2 text-slate-400 group-hover:text-slate-600 transition-colors">
+                            <td className="px-6 py-5 text-center">
+                              <div className="flex items-center justify-center gap-2 text-slate-400 group-hover:text-slate-600 transition-colors">
                                 <FileSearch className="w-3.5 h-3.5" />
                                 <span className="text-[10px] font-bold italic">{entry.reference}</span>
                               </div>
@@ -211,7 +216,7 @@ export function KnowledgeBaseScreen() {
                               exit={{ opacity: 0, height: 0 }}
                               className="bg-slate-50/50"
                             >
-                               <td colSpan={5} className="px-12 py-8 border-l-4 border-l-[#5DA9DD]">
+                               <td colSpan={6} className="px-12 py-8 border-l-4 border-l-[#5DA9DD]">
                                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                                      <div className="lg:col-span-2 space-y-4">
                                         <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
