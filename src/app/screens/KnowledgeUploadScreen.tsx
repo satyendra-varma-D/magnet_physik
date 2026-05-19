@@ -21,6 +21,9 @@ import {
   Loader2,
   Search,
   ListChecks,
+  ChevronLeft,
+  ChevronRight,
+  Sliders,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -73,6 +76,10 @@ export function KnowledgeUploadScreen() {
   const [processingStep, setProcessingStep] = useState(0);
   const [documentType, setDocumentType] = useState<'email' | 'datasheet'>('email');
   
+  const [searchQuery, setSearchQuery] = useState("");
+  const [density, setDensity] = useState<'compact' | 'comfortable' | 'expanded'>('compact');
+  const [currentPage, setCurrentPage] = useState(1);
+
   type QaItemStatus = 'pending' | 'approved' | 'rejected';
   const [qaItems, setQaItems] = useState([
     {
@@ -92,6 +99,36 @@ export function KnowledgeUploadScreen() {
       q: "Can the EZ4 series be used in vacuum environments?",
       a: "The EZ4 series fluxmeters are compatible with vacuums up to 10^-6 mbar. For higher vacuum requirements, special outgassing-prepared sensors are available.",
       status: 'pending' as QaItemStatus
+    },
+    {
+      id: "04",
+      q: "What is the calibration interval for the EF 5 fluxmeter?",
+      a: "The standard calibration interval for the EF 5 is 12 months under normal operating conditions. For high-precision applications or harsh environments, a 6-month interval is recommended.",
+      status: 'pending' as QaItemStatus
+    },
+    {
+      id: "05",
+      q: "How do I resolve the thermal drift error on the FH 55?",
+      a: "Thermal drift can be minimized by enabling the auto-zero function in the settings and using the temperature compensation probe. Ensure the probe is positioned as close to the sensor active area as possible.",
+      status: 'pending' as QaItemStatus
+    },
+    {
+      id: "06",
+      q: "Is the Hall probe HP-U-55 compatible with the FH 54?",
+      a: "Yes, but it requires an adapter cable (Part No. 902-311) and manual calibration factor entry, as the FH 54 does not support automatic probe identification.",
+      status: 'pending' as QaItemStatus
+    },
+    {
+      id: "07",
+      q: "What is the maximum frequency range of the AC field measurement?",
+      a: "The AC field measurement supports frequencies up to 50 kHz for sinusoidal waves. For non-sinusoidal waveforms, the peak frequency should not exceed 35 kHz to avoid signal attenuation.",
+      status: 'pending' as QaItemStatus
+    },
+    {
+      id: "08",
+      q: "What is the recommended storage temperature for the high-precision probes?",
+      a: "Probes should be stored in a dry, dust-free environment between -10°C and +60°C. Avoid exposure to strong ambient magnetic fields above 10 mT during storage.",
+      status: 'pending' as QaItemStatus
     }
   ]);
 
@@ -102,6 +139,15 @@ export function KnowledgeUploadScreen() {
   const updateQaAnswer = (id: string, newAnswer: string) => {
     setQaItems(prev => prev.map(item => item.id === id ? { ...item, a: newAnswer } : item));
   };
+
+  const filteredItems = qaItems.filter(item => 
+    item.q.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    item.a.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const pageSize = 3;
+  const paginatedItems = filteredItems.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const totalPages = Math.ceil(filteredItems.length / pageSize);
 
   const processingStages = documentType === 'email' ? [
     { label: "File Upload Complete", status: "complete" },
@@ -145,21 +191,49 @@ export function KnowledgeUploadScreen() {
   };
 
   return (
-    <div className="w-full space-y-8 animate-in fade-in duration-700 pb-20">
+    <div className="w-full space-y-4 animate-in fade-in duration-700 pb-4">
       {/* Header Section */}
-      <div className="border-b border-slate-200 pb-8 flex items-end justify-between">
+      <div className="border-b border-slate-200 pb-4 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">Add New Knowledge</h2>
-          <p className="text-slate-500 text-sm max-w-3xl leading-relaxed font-medium">
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-1">Add New Knowledge</h2>
+          <p className="text-slate-500 text-xs max-w-xl leading-relaxed font-medium">
             Upload technical datasheets, component manuals, and historical engineering conversations for technical extraction and validation.
           </p>
         </div>
+        {workflowState === 'completed' && documentType === 'email' && (
+          <div className="flex flex-col sm:flex-row items-center gap-4 bg-slate-50 p-2.5 rounded-2xl border border-slate-100 shadow-sm shrink-0">
+             <div className="relative w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input 
+                  type="text" 
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Filter technical extracts..." 
+                  className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-sm font-medium focus:ring-2 focus:ring-blue-100 outline-none transition-all shadow-sm"
+                />
+             </div>
+             <div className="flex items-center gap-4 px-4 py-1">
+                <div className="text-center">
+                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Active Extracts</p>
+                   <p className="text-sm font-bold text-slate-900 mt-1 leading-none">{filteredItems.length}</p>
+                </div>
+                <div className="w-px h-6 bg-slate-200" />
+                <div className="text-center">
+                   <p className="text-[10px] font-bold text-[#009EE3] uppercase tracking-widest leading-none">Confidence Avg</p>
+                   <p className="text-sm font-bold text-[#009EE3] mt-1 leading-none">98%</p>
+                </div>
+             </div>
+          </div>
+        )}
       </div>
 
       {/* Main Layout - Expanded for better space utilization */}
       <div className="w-full">
         
-        <div className="space-y-8">
+        <div className="space-y-4">
           
           <AnimatePresence mode="wait">
             {workflowState === 'idle' && (
@@ -208,7 +282,7 @@ export function KnowledgeUploadScreen() {
                           <label className="text-sm font-bold text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
                             <Plus className="w-3.5 h-3.5" /> Resource Input Area
                           </label>
-                          <div className="border-2 border-slate-200 rounded-2xl p-16 flex flex-col items-center justify-center text-center bg-slate-50/10 group hover:border-[#009EE3] hover:bg-blue-50/10 transition-all border-dashed relative cursor-pointer">
+                          <div className="border-2 border-slate-200 rounded-2xl py-6 px-8 flex flex-col items-center justify-center text-center bg-slate-50/10 group hover:border-[#009EE3] hover:bg-blue-50/10 transition-all border-dashed relative cursor-pointer">
                             <input 
                               type="file" 
                               id="file-browse" 
@@ -218,11 +292,11 @@ export function KnowledgeUploadScreen() {
                                 setUploadedFiles(files.map(f => ({ name: f.name, size: (f.size / 1024 / 1024).toFixed(2) + " MB" })));
                               }}
                             />
-                            <div className="w-16 h-16 bg-white border border-slate-100 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                                <FileText className="w-8 h-8 text-slate-400 group-hover:text-[#009EE3] transition-colors" />
+                            <div className="w-10 h-10 bg-white border border-slate-100 rounded-2xl flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                                <FileText className="w-5 h-5 text-slate-400 group-hover:text-[#009EE3] transition-colors" />
                             </div>
-                            <h5 className="text-base font-bold text-slate-800 mb-2 uppercase tracking-tight">Engineering Data Staging</h5>
-                            <p className="text-sm text-slate-400 mb-8 font-bold uppercase tracking-wider">Drag & drop or browse technical files</p>
+                            <h5 className="text-base font-bold text-slate-800 mb-1 uppercase tracking-tight">Engineering Data Staging</h5>
+                            <p className="text-sm text-slate-400 mb-3 font-bold uppercase tracking-wider">Drag & drop or browse technical files</p>
                             
                             <div className="px-10 py-3.5 bg-[#009EE3] text-white rounded-xl text-sm font-bold uppercase tracking-widest group-hover:bg-[#007AB0] transition-all shadow-md active:scale-95">
                               Select Document
@@ -378,86 +452,83 @@ export function KnowledgeUploadScreen() {
               >
                  {documentType === 'email' ? (
                    <>
-                     {/* Search & Ingestion Stats Bar - Exactly matching Customer Queries */}
-                     <div className="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100 shadow-sm">
-                        <div className="relative w-96">
-                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                       <input 
-                         type="text" 
-                         placeholder="Filter technical extracts..." 
-                         className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-medium focus:ring-2 focus:ring-blue-100 outline-none transition-all shadow-sm"
-                       />
-                    </div>
-                    <div className="flex items-center gap-6 px-6">
-                       <div className="text-center">
-                          <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Active Extracts</p>
-                          <p className="text-base font-bold text-slate-900 leading-none mt-1">12</p>
-                       </div>
-                       <div className="w-px h-8 bg-slate-200" />
-                       <div className="text-center">
-                          <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Confidence Avg</p>
-                          <p className="text-base font-bold text-[#009EE3] leading-none mt-1">98%</p>
-                       </div>
-                    </div>
-                 </div>
-
-                 {/* Card-Based Listing for Enhanced Editing */}
-                 <div className="space-y-4">
-                    {qaItems.map(item => (
-                       <div key={item.id} className={`p-6 border rounded-2xl transition-all duration-300 ${
-                          item.status === 'approved' ? 'bg-green-50 border-green-200 shadow-sm' :
-                          'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
-                       }`}>
-                          <div className="flex justify-between items-start mb-4">
-                             <div>
-                                <span className="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-2 flex items-center gap-2">
-                                   <Database className="w-3.5 h-3.5" /> Category: {documentType === 'email' ? 'Email Conversation' : 'Technical Datasheet'}
-                                </span>
-                                <div className="flex gap-3">
-                                   <span className="text-sm font-mono font-bold text-[#009EE3] mt-0.5">{item.id}</span>
-                                   <h4 className="text-base font-bold text-slate-800 leading-tight"><span className="text-slate-400 mr-1">Q:</span>{item.q}</h4>
-                                </div>
-                             </div>
-                             <div className="flex gap-3 shrink-0 ml-6">
-                                <button 
-                                  onClick={() => updateQaStatus(item.id, item.status === 'approved' ? 'pending' : 'approved')} 
-                                  className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
-                                     item.status === 'approved' ? 'bg-green-500 text-white border-green-600 shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:bg-green-50 hover:text-green-600 hover:border-green-200'
-                                  }`}
-                                >
-                                   {item.status === 'approved' ? 'Approved' : 'Approve'}
-                                </button>
-                             </div>
-                          </div>
-                          <div className="mt-4">
-                             <label className="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-2 ml-1">Editable Answer</label>
-                             <textarea 
-                               value={item.a}
-                               onChange={(e) => updateQaAnswer(item.id, e.target.value)}
-                               className={`w-full p-4 rounded-xl text-sm font-medium leading-relaxed border focus:outline-none focus:ring-2 resize-none transition-all ${
-                                  item.status === 'approved' ? 'bg-white border-green-200 focus:ring-green-100 text-slate-800' :
-                                  'bg-slate-50 border-slate-200 focus:ring-blue-100 focus:border-[#009EE3] text-slate-800'
-                               }`}
-                               rows={3}
-                             />
-                          </div>
-                       </div>
-                    ))}
-                 </div>
-
-                 {/* Industrial Footer Detail Bar - Exactly matching Customer Queries */}
-                 <div className="flex items-center justify-between px-4 pt-4 border-t border-slate-50">
-                    <div className="flex items-center gap-8">
-                       <div className="flex items-center gap-3">
-                          <Database className="w-3.5 h-3.5 text-slate-300" />
-                          <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Intelligence Pool: 1.2k Segments</span>
-                       </div>
-                       <div className="flex items-center gap-3">
-                          <ShieldCheck className="w-3.5 h-3.5 text-green-400" />
-                          <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Integrity Status: Verified</span>
-                       </div>
-                    </div>
+                  {/* Card-Based Listing for Enhanced Editing */}
+                  <div className="space-y-4">
+                     {paginatedItems.map(item => (
+                        <div key={item.id} className={`transition-all duration-300 border rounded-2xl ${
+                           item.status === 'approved' ? 'bg-green-50 border-green-200 shadow-sm' :
+                           'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
+                        } ${
+                           density === 'compact' ? 'p-4' :
+                           density === 'expanded' ? 'p-8' : 'p-6'
+                        }`}>
+                           <div className="flex justify-between items-start mb-4">
+                              <div>
+                                 <span className="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-2 flex items-center gap-2">
+                                    <Database className="w-3.5 h-3.5" /> Category: {documentType === 'email' ? 'Email Conversation' : 'Technical Datasheet'}
+                                 </span>
+                                 <div className="flex gap-3">
+                                    <span className={`font-mono font-bold text-[#009EE3] mt-0.5 ${
+                                      density === 'compact' ? 'text-xs' : density === 'expanded' ? 'text-base' : 'text-sm'
+                                    }`}>{item.id}</span>
+                                    <h4 className={`font-bold text-slate-800 leading-tight ${
+                                      density === 'compact' ? 'text-sm' : density === 'expanded' ? 'text-lg' : 'text-base'
+                                    }`}><span className="text-slate-400 mr-1">Q:</span>{item.q}</h4>
+                                 </div>
+                              </div>
+                              <div className="flex gap-3 shrink-0 ml-6">
+                                 <button 
+                                   onClick={() => updateQaStatus(item.id, item.status === 'approved' ? 'pending' : 'approved')} 
+                                   className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+                                      item.status === 'approved' ? 'bg-green-500 text-white border-green-600 shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:bg-green-50 hover:text-green-600 hover:border-green-200'
+                                   }`}
+                                 >
+                                    {item.status === 'approved' ? 'Approved' : 'Approve'}
+                                 </button>
+                              </div>
+                           </div>
+                           <div className="mt-4">
+                              <label className="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-2 ml-1">Editable Answer</label>
+                              <textarea 
+                                value={item.a}
+                                onChange={(e) => updateQaAnswer(item.id, e.target.value)}
+                                className={`w-full rounded-xl font-medium leading-relaxed border focus:outline-none focus:ring-2 resize-none transition-all ${
+                                   item.status === 'approved' ? 'bg-white border-green-200 focus:ring-green-100 text-slate-800' :
+                                   'bg-slate-50 border-slate-200 focus:ring-blue-100 focus:border-[#009EE3] text-slate-800'
+                                } ${
+                                   density === 'compact' ? 'p-3 text-xs' :
+                                   density === 'expanded' ? 'p-5 text-base' : 'p-4 text-sm'
+                                }`}
+                                rows={density === 'compact' ? 2 : density === 'expanded' ? 5 : 3}
+                              />
+                           </div>
+                        </div>
+                     ))}
                   </div>
+
+                  {/* Pagination Bar */}
+                  {totalPages > 1 && (
+                     <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl p-4 shadow-sm animate-in fade-in">
+                        <button
+                          disabled={currentPage === 1}
+                          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                          className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-transparent transition-all flex items-center gap-2"
+                        >
+                           <ChevronLeft className="w-4 h-4" /> Previous
+                        </button>
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                           Page {currentPage} of {totalPages} ({filteredItems.length} Extracts)
+                        </span>
+                        <button
+                          disabled={currentPage === totalPages}
+                          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                          className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-500 hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-transparent transition-all flex items-center gap-2"
+                        >
+                           Next <ChevronRight className="w-4 h-4" />
+                        </button>
+                     </div>
+                  )}
+
                    </>
                  ) : (
                    <div className="bg-white border border-slate-200 rounded-3xl p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-16 shadow-sm">
@@ -516,9 +587,9 @@ export function KnowledgeUploadScreen() {
                          </div>
                       </div>
                    </div>
-                 )}
+                  )}
 
-                 <div className="flex items-center justify-center gap-6 pt-12">
+                  <div className="flex items-center justify-center gap-6 pt-6">
                    {documentType === 'email' ? (
                      <>
                         <button 

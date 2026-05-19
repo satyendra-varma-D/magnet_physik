@@ -90,7 +90,7 @@ export function DashboardScreen() {
              className="px-8 py-2.5 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-widest hover:bg-[#007AB0] transition-all shadow-lg flex items-center gap-3"
            >
               <Zap className="w-3.5 h-3.5" />
-              Response Workspace
+              Create AI Response
            </button>
         </div>
       </div>

@@ -15,10 +15,14 @@ import {
   CheckCircle2,
   AlertCircle,
   FileSearch,
+  XCircle,
+  Trash2,
+  RefreshCw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const knowledgeEntries = [
   { 
@@ -142,10 +146,38 @@ export function KnowledgeBaseScreen() {
   const [activeTab, setActiveTab] = useState<"Emails" | "Datasheets">("Emails");
   const [activeFilter, setActiveFilter] = useState("All");
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [entries, setEntries] = useState(knowledgeEntries);
+
+  const handleApprove = (id: string, e: React.MouseEvent) => {
+     e.stopPropagation();
+     setEntries(prev => prev.map(entry => entry.id === id ? { ...entry, status: 'Approved' } : entry));
+     setExpandedRow(null);
+     toast.success(`Entry ${id} approved successfully`);
+  };
+
+  const handleReject = (id: string, e: React.MouseEvent) => {
+     e.stopPropagation();
+     setEntries(prev => prev.map(entry => entry.id === id ? { ...entry, status: 'Rejected' } : entry));
+     setExpandedRow(null);
+     toast.error(`Entry ${id} rejected`);
+  };
+
+  const handleUpdate = (id: string, e: React.MouseEvent) => {
+     e.stopPropagation();
+     setExpandedRow(null);
+     toast.success(`Entry ${id} updated in Knowledge Base`);
+  };
+
+  const handleDiscard = (id: string, e: React.MouseEvent) => {
+     e.stopPropagation();
+     setEntries(prev => prev.filter(entry => entry.id !== id));
+     setExpandedRow(null);
+     toast.info(`Entry ${id} discarded`);
+  };
 
   const filters = ["All", "Approved", "Pending Review"];
 
-  const filteredEntries = knowledgeEntries.filter(entry => {
+  const filteredEntries = entries.filter(entry => {
     if (activeTab === "Datasheets") {
        return entry.type === "Datasheets";
     } else {
@@ -299,9 +331,17 @@ export function KnowledgeBaseScreen() {
                               <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded border ${
                                 entry.status === 'Approved' 
                                 ? 'bg-green-50 border-green-100 text-green-600' 
+                                : entry.status === 'Rejected'
+                                ? 'bg-red-50 border-red-100 text-red-600'
                                 : 'bg-amber-50 border-amber-100 text-amber-600'
                               }`}>
-                                 {entry.status === 'Approved' ? <ShieldCheck className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                                 {entry.status === 'Approved' ? (
+                                    <ShieldCheck className="w-3 h-3" />
+                                 ) : entry.status === 'Rejected' ? (
+                                    <XCircle className="w-3 h-3" />
+                                 ) : (
+                                    <Clock className="w-3 h-3" />
+                                 )}
                                  <span className="text-sm font-bold uppercase tracking-widest">{entry.status}</span>
                               </div>
                             </td>
@@ -347,9 +387,39 @@ export function KnowledgeBaseScreen() {
                                               </div>
                                            </div>
                                         </div>
-                                        <button className="w-full py-3 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-widest hover:bg-[#007AB0] transition-all flex items-center justify-center gap-2">
-                                           <ExternalLink className="w-3.5 h-3.5" /> View Full Protocol
-                                        </button>
+                                        <div className="flex gap-4">
+                                           {entry.status === "Pending Review" ? (
+                                              <>
+                                                 <button 
+                                                   onClick={(e) => handleReject(entry.id, e)}
+                                                   className="flex-1 py-3 border border-red-200 text-red-600 rounded text-sm font-bold uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center gap-2"
+                                                 >
+                                                    <XCircle className="w-4 h-4" /> Reject
+                                                 </button>
+                                                 <button 
+                                                   onClick={(e) => handleApprove(entry.id, e)}
+                                                   className="flex-1 py-3 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-widest hover:bg-[#007AB0] transition-all flex items-center justify-center gap-2"
+                                                 >
+                                                    <CheckCircle2 className="w-4 h-4" /> Approve
+                                                 </button>
+                                              </>
+                                           ) : (
+                                              <>
+                                                 <button 
+                                                   onClick={(e) => handleDiscard(entry.id, e)}
+                                                   className="flex-1 py-3 border border-red-200 text-red-600 rounded text-sm font-bold uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center gap-2"
+                                                 >
+                                                    <Trash2 className="w-4 h-4" /> Discard
+                                                 </button>
+                                                 <button 
+                                                   onClick={(e) => handleUpdate(entry.id, e)}
+                                                   className="flex-1 py-3 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-widest hover:bg-[#007AB0] transition-all flex items-center justify-center gap-2"
+                                                 >
+                                                    <RefreshCw className="w-4 h-4" /> Update
+                                                 </button>
+                                              </>
+                                           )}
+                                        </div>
                                      </div>
                                   </div>
                                </td>

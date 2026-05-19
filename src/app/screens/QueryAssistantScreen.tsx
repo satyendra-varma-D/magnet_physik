@@ -1,6 +1,7 @@
 import {
    Zap,
    FileText,
+   Trash2,
    ShieldCheck,
    RefreshCw,
    Terminal,
@@ -68,10 +69,18 @@ export function QueryAssistantScreen() {
       toast.success("Response copied to clipboard");
    };
 
+   const handleDiscard = () => {
+      setQuery("");
+      setSuggestedResponse("");
+      setShowResult(false);
+      setUploadedFiles([]);
+      toast.success("Draft and query discarded");
+   };
+
    return (
-      <div className="h-full flex flex-col gap-6 animate-in fade-in duration-700 pb-10">
+      <div className="h-full flex flex-col gap-4 animate-in fade-in duration-700 pb-4">
          {/* Header Section */}
-         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-slate-200 pb-8">
+         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div className="space-y-1">
                <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Create AI Response</h2>
                <p className="text-sm text-slate-500 font-medium max-w-2xl leading-relaxed">
@@ -80,9 +89,9 @@ export function QueryAssistantScreen() {
             </div>
          </div>
 
-         <div className="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-8 min-h-[600px]">
+         <div className="flex-1 grid grid-cols-1 xl:grid-cols-12 gap-8 min-h-[600px]">
                 {/* LEFT SIDE: Engineering Input Protocol */}
-                <div className="flex flex-col bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                <div className="xl:col-span-5 flex flex-col bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
                    <div className="px-8 py-5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                          <div className="w-8 h-8 bg-white border border-slate-100 rounded-lg flex items-center justify-center">
@@ -90,14 +99,12 @@ export function QueryAssistantScreen() {
                          </div>
                          <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">AI Response Protocol</h3>
                       </div>
-                      <div className="px-3 py-1 bg-blue-100 rounded-full border border-blue-100">
-                        <span className="text-sm font-bold text-[#009EE3] uppercase tracking-widest">Input Layer: V4.1</span>
-                      </div>
+
                    </div>
 
-                   <div className="flex-1 p-10 flex flex-col space-y-10 overflow-y-auto premium-scrollbar">
+                   <div className="flex-1 p-5 flex flex-col space-y-4 overflow-y-auto premium-scrollbar">
                       <div className="flex-1 flex flex-col space-y-4">
-                         <label className="text-sm font-bold text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
+                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
                            <MessageSquare className="w-3.5 h-3.5" /> Primary Technical Query
                          </label>
                          <textarea
@@ -111,11 +118,11 @@ export function QueryAssistantScreen() {
 
                    </div>
 
-                   <div className="p-10 border-t border-slate-100 bg-slate-50/50">
+                   <div className="p-4 border-t border-slate-100 bg-slate-50/50">
                       <button
                          onClick={handleGenerate}
                          disabled={!query || isGenerating}
-                         className="w-full py-5 bg-[#009EE3] text-white rounded-2xl text-sm font-bold uppercase tracking-[0.2em] shadow-xl shadow-blue-500/10 hover:bg-[#007AB0] flex items-center justify-center gap-4 transition-all disabled:opacity-50 active:scale-[0.98]"
+                         className="w-full py-3 bg-[#009EE3] text-white rounded-2xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl shadow-blue-500/10 hover:bg-[#007AB0] flex items-center justify-center gap-4 transition-all disabled:opacity-50 active:scale-[0.98]"
                       >
                          {isGenerating ? (
                             <>
@@ -133,7 +140,7 @@ export function QueryAssistantScreen() {
                 </div>
 
                 {/* RIGHT SIDE: Technical Response Recommendation */}
-                <div className="flex flex-col bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden relative">
+                <div className="xl:col-span-7 flex flex-col bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden relative">
                    <div className="px-8 py-5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                          <div className="w-8 h-8 bg-white border border-slate-100 rounded-lg flex items-center justify-center">
@@ -156,56 +163,51 @@ export function QueryAssistantScreen() {
                                DE
                             </button>
                          </div>
-                         <div className="flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full border border-green-100">
-                            <ShieldCheck className="w-3.5 h-3.5 text-green-500" />
-                            <span className="text-sm font-bold text-green-600 uppercase tracking-widest">Validated Accuracy</span>
-                         </div>
                       </div>
                    </div>
 
-                   <div className="flex-1 p-10 overflow-y-auto premium-scrollbar flex flex-col">
+                   <div className="flex-1 p-5 overflow-y-auto premium-scrollbar flex flex-col">
                       {showResult ? (
-                         <div className="space-y-10 animate-in slide-in-from-right-4 duration-700 pb-10">
+                         <div className="space-y-4 animate-in slide-in-from-right-4 duration-700 pb-4">
                             <div className="relative group">
                                <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                   <span className="px-3 py-1 bg-blue-100 text-[#009EE3] border border-blue-100 rounded-full text-sm font-bold uppercase">Technical Draft v1.0</span>
                                </div>
                                <textarea
                                   value={suggestedResponse}
-                                  readOnly={!isEditing}
+                                  readOnly={false}
                                   onChange={(e) => setSuggestedResponse(e.target.value)}
-                                  className={`w-full p-10 border rounded-2xl text-sm font-medium leading-relaxed outline-none transition-all resize-none shadow-sm ${isEditing ? 'bg-white border-[#009EE3] text-slate-900 ring-8 ring-blue-50/80' : 'bg-slate-50 border-slate-100 text-slate-600 italic'
-                                     }`}
-                                  rows={15}
+                                  className="w-full p-4 border border-slate-200 rounded-2xl text-xs font-medium leading-relaxed outline-none transition-all resize-none shadow-sm bg-white text-slate-800 focus:border-[#009EE3] focus:ring-4 focus:ring-blue-50/80"
+                                  rows={22}
                                />
                             </div>
 
-                            <div className="space-y-8 pt-8 border-t border-slate-100">
-                               <h4 className="text-sm font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <div className="space-y-3 pt-3 border-t border-slate-100">
+                               <h4 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
                                   <Database className="w-4 h-4 text-[#009EE3]" /> Traceability Base
                                </h4>
 
-                               <div className="grid grid-cols-2 gap-6">
-                                  <div className="p-5 bg-slate-50 border border-slate-100 rounded-xl group hover:border-[#009EE3]/30 transition-all hover:bg-white hover:shadow-sm">
-                                     <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Primary Source</p>
+                               <div className="grid grid-cols-2 gap-3">
+                                  <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl group hover:border-[#009EE3]/30 transition-all hover:bg-white hover:shadow-sm">
+                                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Primary Source</p>
                                      <div className="flex items-center justify-between">
-                                        <span className="text-sm font-bold text-slate-700">FH_55_Specs.pdf</span>
+                                        <span className="text-xs font-bold text-slate-700">FH_55_Specs.pdf</span>
                                         <ArrowRight className="w-3.5 h-3.5 text-[#009EE3] translate-x-0 group-hover:translate-x-1 transition-transform" />
                                      </div>
                                   </div>
-                                  <div className="p-5 bg-slate-50 border border-slate-100 rounded-xl group hover:border-[#009EE3]/30 transition-all hover:bg-white hover:shadow-sm">
-                                     <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Validation Ref</p>
+                                  <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl group hover:border-[#009EE3]/30 transition-all hover:bg-white hover:shadow-sm">
+                                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Validation Ref</p>
                                      <div className="flex items-center justify-between">
-                                        <span className="text-sm font-bold text-slate-700">KB-001: Thermal Drift</span>
+                                        <span className="text-xs font-bold text-slate-700">KB-001: Thermal Drift</span>
                                         <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
                                      </div>
                                   </div>
                                </div>
 
-                               <div className="p-6 bg-blue-100/50 border border-blue-100 rounded-2xl relative overflow-hidden">
+                               <div className="p-3 bg-blue-100/50 border border-blue-100 rounded-2xl relative overflow-hidden">
                                   <div className="relative z-10">
-                                    <p className="text-sm font-bold text-[#009EE3] uppercase tracking-widest mb-3">Engineering Insight Applied</p>
-                                    <p className="text-sm text-slate-600 leading-relaxed italic">
+                                    <p className="text-[10px] font-bold text-[#009EE3] uppercase tracking-widest mb-1">Engineering Insight Applied</p>
+                                    <p className="text-xs text-slate-600 leading-relaxed italic">
                                        Cross-referenced with MP-DRIVE-24 calibration baseline. Thermal drift coefficients verified against ISO-17025 secondary standards for sensor range 35-50°C.
                                     </p>
                                   </div>
@@ -229,18 +231,17 @@ export function QueryAssistantScreen() {
                    </div>
 
                    {showResult && (
-                      <div className="p-8 border-t border-slate-100 bg-slate-50/50 flex items-center gap-6">
+                      <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-6">
                          <button
-                            onClick={() => setIsEditing(!isEditing)}
-                            className={`flex-1 py-5 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-3 ${isEditing ? 'bg-[#009EE3] text-white shadow-xl hover:bg-[#007AB0]' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm'
-                               }`}
-                         >
-                            <Edit3 className="w-4 h-4" />
-                            {isEditing ? "Save Draft" : "Manual Edit"}
-                         </button>
+                             onClick={handleDiscard}
+                             className="flex-1 py-3 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-3 bg-white border border-slate-200 text-rose-500 hover:bg-rose-50 hover:border-rose-200 shadow-sm"
+                          >
+                             <Trash2 className="w-4 h-4" />
+                             Discard
+                          </button>
                          <button
                             onClick={handleCopy}
-                            className="flex-1 py-5 bg-[#009EE3] text-white rounded-2xl text-sm font-bold uppercase tracking-[0.2em] hover:bg-[#007AB0] transition-all shadow-xl shadow-blue-500/10 flex items-center justify-center gap-3 active:scale-95"
+                            className="flex-1 py-3 bg-[#009EE3] text-white rounded-2xl text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#007AB0] transition-all shadow-xl shadow-blue-500/10 flex items-center justify-center gap-3 active:scale-95"
                          >
                             <Clipboard className="w-4 h-4" />
                             Copy Response
@@ -250,18 +251,7 @@ export function QueryAssistantScreen() {
                 </div>
          </div>
 
-         {/* Footer Info */}
-         <div className="flex items-center justify-between px-4 py-8 border-t border-slate-100 mt-auto">
-            <div className="flex items-center gap-10">
-               <div className="flex items-center gap-2.5 text-sm font-bold text-slate-400 uppercase tracking-[0.1em]">
-                  <Database className="w-4 h-4 text-slate-300" /> Intelligence Pool: 1.2k Segments
-               </div>
-               <div className="flex items-center gap-2.5 text-sm font-bold text-slate-400 uppercase tracking-[0.1em]">
-                  <ShieldCheck className="w-4 h-4 text-green-500/40" /> Integrity Status: Verified
-               </div>
-            </div>
-            <p className="text-sm font-bold text-slate-300 uppercase tracking-[0.2em] italic">Station: MP-DRIVE-24 • Engine V1.4</p>
-         </div>
+
       </div>
    );
 }

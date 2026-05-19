@@ -22,10 +22,10 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard", end: true },
-  { to: "/dashboard/knowledge-base", icon: Database, label: "Knowledge Base" },
-  { to: "/dashboard/settings", icon: Settings, label: "Settings" },
   { to: "/dashboard/upload", icon: Upload, label: "Add New Knowledge" },
   { to: "/dashboard/query-assistant", icon: Zap, label: "Create AI Response" },
+  { to: "/dashboard/knowledge-base", icon: Database, label: "Knowledge Base" },
+  { to: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 
 export function DashboardLayout() {
