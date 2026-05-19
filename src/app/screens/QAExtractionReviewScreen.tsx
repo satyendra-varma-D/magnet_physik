@@ -92,8 +92,8 @@ export function QAExtractionReviewScreen() {
             </div>
             <div className="flex items-center gap-3">
                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-200 rounded shadow-sm">
-                  <History className="w-4 h-4 text-[#5DA9DD]" />
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Queue: {mockConversations.length} Segments</span>
+                  <History className="w-4 h-4 text-[#009EE3]" />
+                  <span className="text-sm font-bold text-slate-500 uppercase tracking-widest">Queue: {mockConversations.length} Segments</span>
                </div>
                <button
                   onClick={() => navigate('/dashboard')}
@@ -112,7 +112,7 @@ export function QAExtractionReviewScreen() {
                   <div className="px-5 py-3 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                      <div className="flex items-center gap-2">
                         <Mail className="w-3.5 h-3.5 text-slate-400" />
-                        <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Review Queue</h3>
+                        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Review Queue</h3>
                      </div>
                      <Search className="w-3.5 h-3.5 text-slate-300" />
                   </div>
@@ -122,16 +122,16 @@ export function QAExtractionReviewScreen() {
                            key={conv.id}
                            onClick={() => selectConversation(conv)}
                            className={`w-full text-left p-5 border-b border-slate-50 transition-all group ${selectedConv?.id === conv.id
-                                 ? 'bg-blue-50/50 border-l-4 border-l-[#5DA9DD]'
+                                 ? 'bg-blue-50/80 border-l-4 border-l-[#009EE3]'
                                  : 'hover:bg-slate-50'
                               }`}
                         >
                            <div className="flex justify-between items-start mb-1">
-                              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">{conv.id}</span>
-                              <span className="text-[8px] font-bold text-slate-300 uppercase italic">{conv.sourceType}</span>
+                              <span className="text-sm font-bold text-slate-400 uppercase tracking-tighter">{conv.id}</span>
+                              <span className="text-sm font-bold text-slate-300 uppercase italic">{conv.sourceType}</span>
                            </div>
-                           <h4 className="text-[11px] font-bold text-slate-800 line-clamp-1 group-hover:text-[#5DA9DD] transition-colors">{conv.productRef}</h4>
-                           <p className="text-[9px] text-slate-400 mt-1 line-clamp-1 italic">{conv.sourceFile}</p>
+                           <h4 className="text-sm font-bold text-slate-800 line-clamp-1 group-hover:text-[#009EE3] transition-colors">{conv.productRef}</h4>
+                           <p className="text-sm text-slate-400 mt-1 line-clamp-1 italic">{conv.sourceFile}</p>
                         </button>
                      ))}
                   </div>
@@ -141,9 +141,9 @@ export function QAExtractionReviewScreen() {
                   <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden flex flex-col h-[280px]">
                      <div className="px-4 py-2 bg-slate-800 flex items-center gap-2">
                         <Eye className="w-3 h-3 text-slate-400" />
-                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Original Record Viewer</span>
+                        <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Original Record Viewer</span>
                      </div>
-                     <div className="flex-1 p-5 overflow-y-auto premium-scrollbar text-slate-400 font-mono text-[10px] leading-relaxed italic whitespace-pre-wrap">
+                     <div className="flex-1 p-5 overflow-y-auto premium-scrollbar text-slate-400 font-mono text-sm leading-relaxed italic whitespace-pre-wrap">
                         {selectedConv.originalEmail}
                      </div>
                   </div>
@@ -157,16 +157,16 @@ export function QAExtractionReviewScreen() {
                      <div className="flex-1 flex flex-col">
                         <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-[#5DA9DD] rounded flex items-center justify-center text-white shadow-md">
+                              <div className="w-8 h-8 bg-[#009EE3] rounded flex items-center justify-center text-white shadow-md">
                                  <Sparkles className="w-3.5 h-3.5" />
                               </div>
                               <div>
-                                 <h3 className="text-[10px] font-bold text-slate-900 uppercase tracking-widest">Extracted Knowledge Draft</h3>
-                                 <p className="text-[8px] text-slate-400 font-bold uppercase tracking-tight">System Ref: {selectedConv.id}</p>
+                                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Extracted Knowledge Draft</h3>
+                                 <p className="text-sm text-slate-400 font-bold uppercase tracking-tight">System Ref: {selectedConv.id}</p>
                               </div>
                            </div>
                            <div className="flex items-center gap-2">
-                              <span className="px-2 py-1 bg-blue-50 text-[#5DA9DD] border border-[#5DA9DD]/20 rounded text-[9px] font-bold uppercase">{selectedConv.productRef}</span>
+                              <span className="px-2 py-1 bg-blue-100 text-[#009EE3] border border-[#009EE3]/20 rounded text-sm font-bold uppercase">{selectedConv.productRef}</span>
                            </div>
                         </div>
 
@@ -174,15 +174,15 @@ export function QAExtractionReviewScreen() {
                            {/* Technical Question */}
                            <div className="space-y-3">
                               <div className="flex items-center justify-between ml-1">
-                                 <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                 <label className="text-sm font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
                                     <MessageSquare className="w-3 h-3" /> Technical Question
                                  </label>
-                                 <span className="text-[8px] font-bold text-slate-300 uppercase tracking-tighter">Confidence: High</span>
+                                 <span className="text-sm font-bold text-slate-300 uppercase tracking-tighter">Confidence: High</span>
                               </div>
                               <textarea
                                  value={editableQuestion}
                                  onChange={(e) => setEditableQuestion(e.target.value)}
-                                 className="w-full p-5 bg-slate-50 border border-slate-100 rounded-lg text-xs font-bold text-slate-800 focus:bg-white focus:border-[#5DA9DD] focus:ring-4 focus:ring-blue-50/50 outline-none transition-all resize-none leading-relaxed"
+                                 className="w-full p-5 bg-slate-50 border border-slate-100 rounded-lg text-sm font-bold text-slate-800 focus:bg-white focus:border-[#009EE3] focus:ring-4 focus:ring-blue-50/80 outline-none transition-all resize-none leading-relaxed"
                                  rows={3}
                               />
                            </div>
@@ -190,15 +190,15 @@ export function QAExtractionReviewScreen() {
                            {/* Expert Answer */}
                            <div className="space-y-3">
                               <div className="flex items-center justify-between ml-1">
-                                 <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                    <CheckCircle2 className="w-3 h-3 text-[#5DA9DD]" /> Expert-Validated Answer
+                                 <label className="text-sm font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <CheckCircle2 className="w-3 h-3 text-[#009EE3]" /> Expert-Validated Answer
                                  </label>
-                                 <span className="text-[8px] font-bold text-slate-300 uppercase tracking-tighter">Edit Required for Context</span>
+                                 <span className="text-sm font-bold text-slate-300 uppercase tracking-tighter">Edit Required for Context</span>
                               </div>
                               <textarea
                                  value={editableAnswer}
                                  onChange={(e) => setEditableAnswer(e.target.value)}
-                                 className="w-full p-6 bg-slate-50 border border-slate-100 rounded-lg text-xs font-medium text-slate-600 focus:bg-white focus:border-[#5DA9DD] focus:ring-4 focus:ring-blue-50/50 outline-none transition-all resize-none leading-relaxed italic"
+                                 className="w-full p-6 bg-slate-50 border border-slate-100 rounded-lg text-sm font-medium text-slate-600 focus:bg-white focus:border-[#009EE3] focus:ring-4 focus:ring-blue-50/80 outline-none transition-all resize-none leading-relaxed italic"
                                  rows={12}
                               />
                            </div>
@@ -206,19 +206,19 @@ export function QAExtractionReviewScreen() {
                            {/* Additional Metadata */}
                            <div className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-50">
                               <div>
-                                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-2">Material / Sensor Ref</p>
+                                 <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Material / Sensor Ref</p>
                                  <input
                                     type="text"
                                     defaultValue={selectedConv.materialRef}
-                                    className="w-full bg-slate-50 border border-slate-100 rounded px-3 py-2 text-[10px] font-bold text-slate-700"
+                                    className="w-full bg-slate-50 border border-slate-100 rounded px-3 py-2 text-sm font-bold text-slate-700"
                                  />
                               </div>
                               <div>
-                                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-2">Workflow / Protocol</p>
+                                 <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Workflow / Protocol</p>
                                  <input
                                     type="text"
                                     defaultValue={selectedConv.workflowRef}
-                                    className="w-full bg-slate-50 border border-slate-100 rounded px-3 py-2 text-[10px] font-bold text-slate-700"
+                                    className="w-full bg-slate-50 border border-slate-100 rounded px-3 py-2 text-sm font-bold text-slate-700"
                                  />
                               </div>
                            </div>
@@ -230,7 +230,7 @@ export function QAExtractionReviewScreen() {
                            <FileSearch className="w-8 h-8" />
                         </div>
                         <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Awaiting Selection</h4>
-                        <p className="text-[10px] text-slate-300 font-medium max-w-[240px] leading-relaxed">Select a knowledge segment from the queue to initiate governance validation.</p>
+                        <p className="text-sm text-slate-300 font-medium max-w-[240px] leading-relaxed">Select a knowledge segment from the queue to initiate governance validation.</p>
                      </div>
                   )}
                </div>
@@ -239,8 +239,8 @@ export function QAExtractionReviewScreen() {
             {/* PANEL 3: Governance Actions & Decisions (3 Cols) */}
             <div className="xl:col-span-3 flex flex-col gap-6">
                <div className="bg-white border border-slate-200 rounded-lg p-8 shadow-sm space-y-8 flex flex-col flex-1">
-                  <h3 className="text-[10px] font-bold text-slate-900 uppercase tracking-widest border-b border-slate-100 pb-4 flex items-center gap-2">
-                     <ShieldCheck className="w-4 h-4 text-[#5DA9DD]" />
+                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest border-b border-slate-100 pb-4 flex items-center gap-2">
+                     <ShieldCheck className="w-4 h-4 text-[#009EE3]" />
                      Decision Protocol
                   </h3>
 
@@ -248,7 +248,7 @@ export function QAExtractionReviewScreen() {
                      <button
                         onClick={() => handleAction('approve')}
                         disabled={!selectedConv || isProcessing}
-                        className="w-full py-4 bg-[#5DA9DD] text-white rounded text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#4A98CC] transition-all shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
+                        className="w-full py-4 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-[0.2em] hover:bg-[#007AB0] transition-all shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
                      >
                         <CheckCircle2 className="w-4 h-4 text-green-400" />
                         Final Approve
@@ -257,22 +257,22 @@ export function QAExtractionReviewScreen() {
                      <button
                         onClick={() => handleAction('edit')}
                         disabled={!selectedConv || isProcessing}
-                        className="w-full py-4 bg-white border border-slate-200 text-slate-900 rounded text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-slate-50 transition-all flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
+                        className="w-full py-4 bg-white border border-slate-200 text-slate-900 rounded text-sm font-bold uppercase tracking-[0.2em] hover:bg-slate-50 transition-all flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
                      >
-                        <Edit3 className="w-4 h-4 text-[#5DA9DD]" />
+                        <Edit3 className="w-4 h-4 text-[#009EE3]" />
                         Update & Sync
                      </button>
 
                      <div className="py-4 flex items-center gap-4">
                         <div className="flex-1 h-px bg-slate-100" />
-                        <span className="text-[8px] font-bold text-slate-300 uppercase">Conflict Logic</span>
+                        <span className="text-sm font-bold text-slate-300 uppercase">Conflict Logic</span>
                         <div className="flex-1 h-px bg-slate-100" />
                      </div>
 
                      <button
                         onClick={() => handleAction('reject')}
                         disabled={!selectedConv || isProcessing}
-                        className="w-full py-4 bg-white border border-slate-200 text-red-500 rounded text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-red-50 transition-all flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
+                        className="w-full py-4 bg-white border border-slate-200 text-red-500 rounded text-sm font-bold uppercase tracking-[0.2em] hover:bg-red-50 transition-all flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
                      >
                         <XCircle className="w-4 h-4" />
                         Reject Extraction
@@ -282,7 +282,7 @@ export function QAExtractionReviewScreen() {
                   <div className="p-5 bg-slate-50 rounded-lg border border-slate-100">
                      <div className="flex items-center gap-2 mb-3">
                         <BookOpen className="w-3.5 h-3.5 text-slate-400" />
-                        <h4 className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Quality Checklist</h4>
+                        <h4 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Quality Checklist</h4>
                      </div>
                      <div className="space-y-2.5">
                         {[
@@ -291,17 +291,17 @@ export function QAExtractionReviewScreen() {
                            "Redact customer contact data",
                         ].map((check, i) => (
                            <div key={i} className="flex items-center gap-2">
-                              <div className="w-1 h-1 bg-[#5DA9DD] rounded-full" />
-                              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tight leading-none">{check}</span>
+                              <div className="w-1 h-1 bg-[#009EE3] rounded-full" />
+                              <span className="text-sm font-bold text-slate-400 uppercase tracking-tight leading-none">{check}</span>
                            </div>
                         ))}
                      </div>
                   </div>
                </div>
 
-               <div className="bg-[#5DA9DD]/5 border border-[#5DA9DD]/10 rounded-lg p-6">
-                  <p className="text-[10px] font-bold text-[#5DA9DD] uppercase tracking-widest mb-2">Audit Compliance</p>
-                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed italic">
+               <div className="bg-[#009EE3]/5 border border-[#009EE3]/10 rounded-lg p-6">
+                  <p className="text-sm font-bold text-[#009EE3] uppercase tracking-widest mb-2">Audit Compliance</p>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed italic">
                      All approvals are digitally signed by Station: **DRIVE-24** and logged for engineering compliance.
                   </p>
                </div>
@@ -311,9 +311,9 @@ export function QAExtractionReviewScreen() {
          {/* Workflow Status Bar */}
          <div className="bg-white border border-slate-200 rounded-lg p-8 shadow-sm">
             <div className="flex items-center justify-between mb-8">
-               <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Intelligence Lifecycle Status</h3>
+               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Intelligence Lifecycle Status</h3>
                <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100">Active Pipeline</span>
+                  <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100">Active Pipeline</span>
                </div>
             </div>
             <div className="flex items-center justify-between max-w-4xl mx-auto px-10">
@@ -326,12 +326,12 @@ export function QAExtractionReviewScreen() {
                   <div key={i} className="flex items-center flex-1 last:flex-none">
                      <div className="flex flex-col items-center gap-3 relative group">
                         <div className={`w-12 h-12 rounded flex items-center justify-center border-2 transition-all duration-500 ${step.status === 'complete' ? 'bg-green-50 border-green-500 text-green-600' :
-                              step.status === 'current' ? 'bg-[#5DA9DD] border-[#5DA9DD] text-white shadow-xl scale-110' :
+                              step.status === 'current' ? 'bg-[#009EE3] border-[#009EE3] text-white shadow-xl scale-110' :
                                  'bg-slate-50 border-slate-100 text-slate-200'
                            }`}>
                            <step.icon className="w-5 h-5" />
                         </div>
-                        <span className={`text-[9px] font-bold uppercase tracking-[0.1em] absolute -bottom-7 whitespace-nowrap transition-colors ${step.status === 'current' ? 'text-slate-900' : 'text-slate-400'
+                        <span className={`text-sm font-bold uppercase tracking-[0.1em] absolute -bottom-7 whitespace-nowrap transition-colors ${step.status === 'current' ? 'text-slate-900' : 'text-slate-400'
                            }`}>
                            {step.label}
                         </span>
@@ -366,13 +366,13 @@ export function QAExtractionReviewScreen() {
                         </div>
                         <div className="space-y-2">
                            <h3 className="text-xl font-bold text-slate-900 uppercase tracking-tight">Intelligence Verified</h3>
-                           <p className="text-xs text-slate-400 font-medium leading-relaxed">
+                           <p className="text-sm text-slate-400 font-medium leading-relaxed">
                               The extraction protocol has been completed. Segment **{selectedConv?.id}** is now operational in the **Approved Knowledge Base**.
                            </p>
                         </div>
                         <button
                            onClick={() => { setShowSuccess(false); setSelectedConv(null); }}
-                           className="w-full py-5 bg-[#5DA9DD] text-white rounded text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#4A98CC] transition-all shadow-lg active:scale-95"
+                           className="w-full py-5 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-[0.2em] hover:bg-[#007AB0] transition-all shadow-lg active:scale-95"
                         >
                            Continue Queue Review
                         </button>

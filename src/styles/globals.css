@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Enterprise Industrial Palette */
-    --primary: #5DA9DD; /* Standardized Light Blue */
+    --primary: #009EE3; /* Standardized Light Blue */
     --primary-hover: #005596;
     --secondary: #009EE3; /* Magnet-Physik Brand Blue */
     --surface: #FFFFFF;
@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .status-badge {
-  @apply px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border;
+  @apply px-2 py-0.5 rounded text-sm font-bold uppercase tracking-wider border;
 }
 
 .mono-value {

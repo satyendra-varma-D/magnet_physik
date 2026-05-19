@@ -58,24 +58,24 @@ export function QueryHistoryScreen() {
           >
             <div className="flex items-start justify-between gap-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 bg-[#5DA9DD]/10 rounded-2xl flex items-center justify-center border border-[#5DA9DD]/20 shrink-0">
-                  <MessageSquare className="w-6 h-6 text-[#5DA9DD]" />
+                <div className="w-12 h-12 bg-[#009EE3]/10 rounded-2xl flex items-center justify-center border border-[#009EE3]/20 shrink-0">
+                  <MessageSquare className="w-6 h-6 text-[#009EE3]" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-bold text-white font-heading group-hover:text-[#5DA9DD] transition-colors leading-tight">
+                  <h3 className="text-base font-bold text-white font-heading group-hover:text-[#009EE3] transition-colors leading-tight">
                     {item.query}
                   </h3>
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-1.5 text-slate-500">
                       <User className="w-3 h-3" />
-                      <span className="text-[10px] font-bold uppercase tracking-wider">{item.user}</span>
+                      <span className="text-sm font-bold uppercase tracking-wider">{item.user}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-slate-500">
                       <Clock className="w-3 h-3" />
-                      <span className="text-[10px] font-bold uppercase tracking-wider">{item.time}</span>
+                      <span className="text-sm font-bold uppercase tracking-wider">{item.time}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                      <span className={`text-sm font-bold px-2 py-0.5 rounded-md ${
                         item.status === 'Success' ? 'text-green-400 bg-green-500/10 border border-green-500/20' : 'text-amber-400 bg-amber-500/10 border border-amber-500/20'
                       }`}>
                         {item.status}
@@ -84,7 +84,7 @@ export function QueryHistoryScreen() {
                     {item.rating && (
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, idx) => (
-                          <Star key={idx} className={`w-3 h-3 ${idx < item.rating! ? 'text-[#5DA9DD] fill-[#5DA9DD]' : 'text-slate-700'}`} />
+                          <Star key={idx} className={`w-3 h-3 ${idx < item.rating! ? 'text-[#009EE3] fill-[#009EE3]' : 'text-slate-700'}`} />
                         ))}
                       </div>
                     )}

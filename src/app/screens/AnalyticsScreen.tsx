@@ -55,11 +55,11 @@ export function AnalyticsScreen() {
           <p className="text-sm text-slate-500">Deep dive into knowledge base performance and AI utility metrics.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:border-slate-300 rounded-lg text-xs font-semibold text-slate-600 transition-all">
+          <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:border-slate-300 rounded-lg text-sm font-semibold text-slate-600 transition-all">
             <Calendar className="w-4 h-4 text-slate-400" />
             Last 30 Days
           </button>
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-[#5DA9DD] hover:bg-[#4A98CC] text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+          <button className="flex items-center gap-2 px-6 py-2.5 bg-[#009EE3] hover:bg-[#007AB0] text-white rounded-lg text-sm font-bold transition-all shadow-sm">
             <Download className="w-4 h-4" />
             Export Data
           </button>
@@ -82,15 +82,15 @@ export function AnalyticsScreen() {
             className="bg-white border border-slate-200 p-6 rounded-xl group hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between mb-6">
-               <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-100 group-hover:bg-blue-50 transition-colors">
+               <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-100 group-hover:bg-blue-100 transition-colors">
                   <stat.icon className="w-4.5 h-4.5 text-slate-400 group-hover:text-[#009EE3]" />
                </div>
-               <div className="flex items-center gap-1 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100">
+               <div className="flex items-center gap-1 text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100">
                   <ArrowUpRight className="w-3 h-3" /> {stat.change}
                </div>
             </div>
             <div className="text-2xl font-bold text-slate-900 mb-1">{stat.value}</div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
           </motion.div>
         ))}
       </div>
@@ -99,10 +99,10 @@ export function AnalyticsScreen() {
         {/* Main Chart */}
         <div className="lg:col-span-2 bg-white border border-slate-200 p-8 rounded-xl">
           <div className="flex items-center justify-between mb-10">
-            <h3 className="text-lg font-bold text-slate-900">Query Volume Trend</h3>
+            <h3 className="text-base font-bold text-slate-900">Query Volume Trend</h3>
             <div className="flex bg-slate-50 p-1 rounded-lg">
-               <button className="px-4 py-1.5 text-xs font-bold text-slate-400">Daily</button>
-               <button className="px-4 py-1.5 text-xs font-bold bg-white text-[#5DA9DD] rounded shadow-sm">Weekly</button>
+               <button className="px-4 py-1.5 text-sm font-bold text-slate-400">Daily</button>
+               <button className="px-4 py-1.5 text-sm font-bold bg-white text-[#009EE3] rounded shadow-sm">Weekly</button>
             </div>
           </div>
           <div className="h-[300px]">
@@ -112,7 +112,7 @@ export function AnalyticsScreen() {
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} />
                 <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ backgroundColor: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px" }} />
-                <Bar dataKey="count" fill="#5DA9DD" radius={[4, 4, 0, 0]} barSize={40} />
+                <Bar dataKey="count" fill="#009EE3" radius={[4, 4, 0, 0]} barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -120,7 +120,7 @@ export function AnalyticsScreen() {
 
         {/* Category Breakdown */}
         <div className="bg-white border border-slate-200 p-8 rounded-xl flex flex-col">
-          <h3 className="text-lg font-bold text-slate-900 mb-8">Knowledge Sources</h3>
+          <h3 className="text-base font-bold text-slate-900 mb-8">Knowledge Sources</h3>
           <div className="flex-1 h-[240px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -143,7 +143,7 @@ export function AnalyticsScreen() {
              {categoryData.map((cat, i) => (
                <div key={i} className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[i] }} />
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{cat.name}</span>
+                  <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">{cat.name}</span>
                </div>
              ))}
           </div>

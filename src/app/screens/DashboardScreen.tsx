@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 import {
   AreaChart,
   Area,
@@ -26,7 +27,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const queryTrendData = [
+const queryTrendDataDaily = [
   { name: "05/04", q: 12 },
   { name: "05/05", q: 18 },
   { name: "05/06", q: 15 },
@@ -34,6 +35,21 @@ const queryTrendData = [
   { name: "05/08", q: 22 },
   { name: "05/09", q: 30 },
   { name: "05/10", q: 28 },
+];
+
+const queryTrendDataWeekly = [
+  { name: "Week 1", q: 85 },
+  { name: "Week 2", q: 110 },
+  { name: "Week 3", q: 95 },
+  { name: "Week 4", q: 140 },
+];
+
+const queryTrendDataMonthly = [
+  { name: "Jan", q: 320 },
+  { name: "Feb", q: 380 },
+  { name: "Mar", q: 350 },
+  { name: "Apr", q: 420 },
+  { name: "May", q: 510 },
 ];
 
 const recentActivities = [
@@ -46,26 +62,32 @@ const recentActivities = [
 
 export function DashboardScreen() {
   const navigate = useNavigate();
+  const [trendFilter, setTrendFilter] = useState<"Daily" | "Weekly" | "Monthly">("Daily");
+
+  const activeTrendData = 
+    trendFilter === "Daily" ? queryTrendDataDaily : 
+    trendFilter === "Weekly" ? queryTrendDataWeekly : 
+    queryTrendDataMonthly;
 
   return (
     <div className="w-full space-y-8 animate-in fade-in duration-700">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-8">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Operational Overview</h2>
+          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Dashboard</h2>
           <p className="text-sm text-slate-500 font-medium mt-1">Magnet-Physik Engineering Intelligence Platform • Phase 1 PoC</p>
         </div>
         <div className="flex items-center gap-3">
            <button 
              onClick={() => navigate('/dashboard/upload')}
-             className="px-6 py-2.5 bg-white border border-[#5DA9DD]/20 text-[#5DA9DD] rounded text-[10px] font-bold uppercase tracking-widest hover:bg-[#5DA9DD]/5 transition-all shadow-sm flex items-center gap-2"
+             className="px-6 py-2.5 bg-white border border-[#009EE3]/20 text-[#009EE3] rounded text-sm font-bold uppercase tracking-widest hover:bg-[#009EE3]/5 transition-all shadow-sm flex items-center gap-2"
            >
               <Database className="w-3.5 h-3.5" />
-              Technical Ingestion
+              Add New Knowledge
            </button>
            <button 
              onClick={() => navigate('/dashboard/query-assistant')}
-             className="px-8 py-2.5 bg-[#5DA9DD] text-white rounded text-[10px] font-bold uppercase tracking-widest hover:bg-[#4A98CC] transition-all shadow-lg flex items-center gap-3"
+             className="px-8 py-2.5 bg-[#009EE3] text-white rounded text-sm font-bold uppercase tracking-widest hover:bg-[#007AB0] transition-all shadow-lg flex items-center gap-3"
            >
               <Zap className="w-3.5 h-3.5" />
               Response Workspace
@@ -79,16 +101,16 @@ export function DashboardScreen() {
         {/* 1. Documents Uploaded */}
         <div className="bg-white border border-slate-200 p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between mb-6">
-             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ingested Documents</h3>
-             <FileText className="w-4 h-4 text-[#5DA9DD]" />
+             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Ingested Documents</h3>
+             <FileText className="w-4 h-4 text-[#009EE3]" />
           </div>
           <div className="space-y-4">
              <div className="flex items-end justify-between border-b border-slate-50 pb-2">
-                <span className="text-[11px] font-bold text-slate-600 uppercase">Datasheets</span>
+                <span className="text-sm font-bold text-slate-600 uppercase">Datasheets</span>
                 <span className="text-2xl font-bold text-slate-900 mono-value">42</span>
              </div>
              <div className="flex items-end justify-between">
-                <span className="text-[11px] font-bold text-slate-600 uppercase">Email Conversations</span>
+                <span className="text-sm font-bold text-slate-600 uppercase">Email Conversations</span>
                 <span className="text-2xl font-bold text-slate-900 mono-value">128</span>
              </div>
           </div>
@@ -97,8 +119,8 @@ export function DashboardScreen() {
         {/* 2. Extraction Summary */}
         <div className="md:col-span-1 xl:col-span-2 bg-white border border-slate-200 p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between mb-6">
-             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Knowledge Extraction Summary</h3>
-             <ClipboardCheck className="w-4 h-4 text-[#5DA9DD]" />
+             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Knowledge Extraction Summary</h3>
+             <ClipboardCheck className="w-4 h-4 text-[#009EE3]" />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
              {[
@@ -109,8 +131,8 @@ export function DashboardScreen() {
                { label: "Rejected", value: "20", color: "text-red-500" },
              ].map((stat, i) => (
                <div key={i} className="flex flex-col p-3 bg-slate-50 rounded border border-slate-100">
-                  <span className={`text-lg font-bold mb-1 mono-value ${stat.color}`}>{stat.value}</span>
-                  <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">{stat.label}</span>
+                  <span className={`text-base font-bold mb-1 mono-value ${stat.color}`}>{stat.value}</span>
+                  <span className="text-sm font-bold text-slate-400 uppercase tracking-tighter">{stat.label}</span>
                </div>
              ))}
           </div>
@@ -119,17 +141,17 @@ export function DashboardScreen() {
         {/* 3. AI Response Activity */}
         <div className="bg-white border border-slate-200 p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between mb-6">
-             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Response Recommendation</h3>
-             <Activity className="w-4 h-4 text-[#5DA9DD]" />
+             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Response Recommendation</h3>
+             <Activity className="w-4 h-4 text-[#009EE3]" />
           </div>
           <div className="space-y-4">
              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-slate-500 uppercase">Generated</span>
+                <span className="text-sm font-bold text-slate-500 uppercase">Generated</span>
                 <span className="text-xl font-bold text-slate-900 mono-value">312</span>
              </div>
              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-slate-500 uppercase">Approved</span>
-                <span className="text-xl font-bold text-[#5DA9DD] mono-value">284</span>
+                <span className="text-sm font-bold text-slate-500 uppercase">Approved</span>
+                <span className="text-xl font-bold text-[#009EE3] mono-value">284</span>
              </div>
           </div>
         </div>
@@ -139,18 +161,33 @@ export function DashboardScreen() {
         {/* Trend Visualization */}
         <div className="xl:col-span-2 bg-white border border-slate-200 rounded-lg p-8 shadow-sm">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-[10px] font-bold text-slate-900 tracking-widest uppercase flex items-center gap-2">
-               <TrendingUp className="w-4 h-4 text-[#5DA9DD]" />
-               Daily Activity Trend
+            <h3 className="text-sm font-bold text-slate-900 tracking-widest uppercase flex items-center gap-2">
+               <TrendingUp className="w-4 h-4 text-[#009EE3]" />
+               Activity Trend
             </h3>
+            <div className="flex items-center bg-slate-50 p-1 rounded border border-slate-200">
+               {["Daily", "Weekly", "Monthly"].map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setTrendFilter(filter as any)}
+                    className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider transition-all ${
+                       trendFilter === filter
+                       ? "bg-white border border-slate-200 text-[#009EE3] shadow-sm"
+                       : "text-slate-400 hover:text-slate-600 border border-transparent"
+                    }`}
+                  >
+                     {filter}
+                  </button>
+               ))}
+            </div>
           </div>
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={queryTrendData}>
+              <AreaChart data={activeTrendData}>
                 <defs>
                   <linearGradient id="colorQ" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#5DA9DD" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#5DA9DD" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#009EE3" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#009EE3" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -159,7 +196,7 @@ export function DashboardScreen() {
                 <Tooltip 
                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold' }}
                 />
-                <Area type="monotone" dataKey="q" stroke="#5DA9DD" strokeWidth={3} fill="url(#colorQ)" />
+                <Area type="monotone" dataKey="q" stroke="#009EE3" strokeWidth={3} fill="url(#colorQ)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -168,11 +205,11 @@ export function DashboardScreen() {
         {/* System Activity Logs */}
         <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
           <div className="flex items-center justify-between mb-8">
-             <h3 className="text-[10px] font-bold text-slate-900 tracking-widest uppercase flex items-center gap-2">
+             <h3 className="text-sm font-bold text-slate-900 tracking-widest uppercase flex items-center gap-2">
                 <History className="w-4 h-4 text-slate-400" />
                 Recent System Log
              </h3>
-             <button className="text-[8px] font-bold text-[#5DA9DD] uppercase tracking-widest hover:underline">Full Audit</button>
+             <button className="text-sm font-bold text-[#009EE3] uppercase tracking-widest hover:underline">Full Audit</button>
           </div>
           <div className="space-y-3">
              {[
@@ -182,12 +219,12 @@ export function DashboardScreen() {
                { icon: CheckCircle2, action: "8 Entries Validated", detail: "Added to master knowledge base", time: "3h ago" },
                { icon: Zap, action: "Response Generated", detail: "Ref: Calibration Protocol Inquiry", time: "5h ago" },
              ].map((log, i) => (
-               <div key={i} className="p-4 bg-slate-50 border border-slate-100 rounded group hover:border-[#5DA9DD] transition-all">
+               <div key={i} className="p-4 bg-slate-50 border border-slate-100 rounded group hover:border-[#009EE3] transition-all">
                   <div className="flex justify-between items-start mb-1">
-                     <p className="text-[10px] font-bold text-slate-800 leading-tight group-hover:text-[#5DA9DD] transition-colors">{log.action}</p>
-                     <span className="text-[8px] font-bold text-slate-300 uppercase shrink-0 ml-4">{log.time}</span>
+                     <p className="text-sm font-bold text-slate-800 leading-tight group-hover:text-[#009EE3] transition-colors">{log.action}</p>
+                     <span className="text-sm font-bold text-slate-300 uppercase shrink-0 ml-4">{log.time}</span>
                   </div>
-                  <p className="text-[9px] font-medium text-slate-400 line-clamp-1">{log.detail}</p>
+                  <p className="text-sm font-medium text-slate-400 line-clamp-1">{log.detail}</p>
                </div>
              ))}
           </div>
@@ -197,14 +234,14 @@ export function DashboardScreen() {
       {/* Operational Status Footer */}
       <div className="flex items-center justify-between px-4 py-6 border-t border-slate-100">
          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+            <div className="flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-widest">
                <div className="w-1.5 h-1.5 bg-green-500 rounded-full" /> System Node: Active
             </div>
-            <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+            <div className="flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-widest">
                <div className="w-1.5 h-1.5 bg-green-500 rounded-full" /> Extraction Engine: Standby
             </div>
          </div>
-         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest italic">Magnet-Physik Engineering Intelligence • Station Node: DRIVE-24</p>
+         <p className="text-sm font-bold text-slate-300 uppercase tracking-widest italic">Magnet-Physik Engineering Intelligence • Station Node: DRIVE-24</p>
       </div>
     </div>
   );

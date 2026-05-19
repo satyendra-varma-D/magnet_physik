@@ -15,15 +15,17 @@ import {
   Search,
   Menu,
   ChevronLeft,
+  Zap,
 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { to: "/dashboard", icon: LayoutDashboard, label: "Operational Overview", end: true },
+  { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard", end: true },
   { to: "/dashboard/knowledge-base", icon: Database, label: "Knowledge Base" },
-  { to: "/dashboard/query-assistant", icon: MessageSquare, label: "Customer Queries" },
-  { to: "/dashboard/settings", icon: Settings, label: "System Administration" },
+  { to: "/dashboard/settings", icon: Settings, label: "Settings" },
+  { to: "/dashboard/upload", icon: Upload, label: "Add New Knowledge" },
+  { to: "/dashboard/query-assistant", icon: Zap, label: "Create AI Response" },
 ];
 
 export function DashboardLayout() {
@@ -42,18 +44,18 @@ export function DashboardLayout() {
       >
         <div className="p-6 h-20 flex items-center justify-between border-b border-slate-50">
           <div className={`flex items-center gap-3 transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
-            <div className="w-8 h-8 bg-[#5DA9DD] rounded-lg flex items-center justify-center shadow-md border border-white/20 flex-shrink-0">
-               <span className="text-white font-bold text-base italic tracking-tighter">MP</span>
+            <div className="w-8 h-8 bg-[#009EE3] rounded-lg flex items-center justify-center shadow-md border border-white/20 flex-shrink-0">
+               <span className="text-white font-bold text-sm italic tracking-tighter">MP</span>
             </div>
             <div className="whitespace-nowrap">
               <h1 className="text-sm font-black tracking-tight text-slate-900 leading-none">MAGNET-PHYSIK</h1>
-              <p className="text-[8px] text-slate-400 font-bold mt-1 uppercase tracking-wider">Engineering Station</p>
+              <p className="text-sm text-slate-400 font-bold mt-1 uppercase tracking-wider">Engineering Station</p>
             </div>
           </div>
           
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`p-2 rounded-lg hover:bg-slate-50 text-slate-400 hover:text-[#5DA9DD] transition-all ${isCollapsed ? 'mx-auto' : ''}`}
+            className={`p-2 rounded-lg hover:bg-slate-50 text-slate-400 hover:text-[#009EE3] transition-all ${isCollapsed ? 'mx-auto' : ''}`}
           >
             {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           </button>
@@ -69,18 +71,18 @@ export function DashboardLayout() {
               className={({ isActive }) =>
                 `group flex items-center gap-2.5 px-3 py-3 rounded-xl transition-all duration-300 relative ${
                   isActive
-                    ? "text-[#5DA9DD] bg-blue-50/50 font-bold border border-blue-100 shadow-sm"
+                    ? "text-[#009EE3] bg-blue-50/80 font-bold border border-blue-100 shadow-sm"
                     : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <item.icon className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? "text-[#5DA9DD]" : "text-slate-400 group-hover:text-[#5DA9DD]"} ${isCollapsed ? 'mx-auto' : ''}`} />
+                  <item.icon className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? "text-[#009EE3]" : "text-slate-400 group-hover:text-[#009EE3]"} ${isCollapsed ? 'mx-auto' : ''}`} />
                   <motion.span 
                     initial={false}
                     animate={{ opacity: isCollapsed ? 0 : 1, x: isCollapsed ? -10 : 0 }}
-                    className={`text-[10px] font-bold uppercase tracking-wider leading-tight transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}
+                    className={`text-sm font-bold uppercase tracking-wider leading-tight transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}
                   >
                     {item.label}
                   </motion.span>
@@ -88,11 +90,11 @@ export function DashboardLayout() {
                   {isActive && !isCollapsed && (
                     <motion.div 
                       layoutId="nav-pill"
-                      className="ml-auto w-1 h-5 bg-[#5DA9DD] rounded-full" 
+                      className="ml-auto w-1 h-5 bg-[#009EE3] rounded-full" 
                     />
                   )}
                   {isActive && isCollapsed && (
-                    <div className="absolute left-0 w-1 h-6 bg-[#5DA9DD] rounded-r-full" />
+                    <div className="absolute left-0 w-1 h-6 bg-[#009EE3] rounded-r-full" />
                   )}
                 </>
               )}
@@ -110,7 +112,7 @@ export function DashboardLayout() {
             <motion.span 
               initial={false}
               animate={{ opacity: isCollapsed ? 0 : 1 }}
-              className={`text-[10px] font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
+              className={`text-sm font-bold uppercase tracking-widest whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-auto'}`}
             >
               Logout
             </motion.span>
@@ -150,16 +152,16 @@ export function DashboardLayout() {
                 className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-50 rounded-lg border border-slate-200 transition-all"
               >
                 <Globe className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-xs font-semibold text-slate-600">{language}</span>
+                <span className="text-sm font-semibold text-slate-600">{language}</span>
               </button>
 
               <div className="flex items-center gap-3 pl-2 group cursor-pointer">
                 <div className="text-right hidden sm:block">
-                  <p className="text-xs font-bold text-slate-900 leading-none">Admin Console</p>
-                  <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">MP-DRIVE-24</p>
+                  <p className="text-sm font-bold text-slate-900 leading-none">Admin Console</p>
+                  <p className="text-sm text-slate-400 mt-1 uppercase tracking-wider">MP-DRIVE-24</p>
                 </div>
-                <div className="w-9 h-9 bg-[#5DA9DD] rounded-lg flex items-center justify-center shadow-sm">
-                  <span className="text-white text-xs font-bold italic">MP</span>
+                <div className="w-9 h-9 bg-[#009EE3] rounded-lg flex items-center justify-center shadow-sm">
+                  <span className="text-white text-sm font-bold italic">MP</span>
                 </div>
               </div>
             </div>
